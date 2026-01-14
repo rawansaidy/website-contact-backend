@@ -141,45 +141,6 @@ app.post("/verify-and-send-message", async (req, res) => {
   }
 });
 
-// Endpoint to verify code and send menu request
-app.post("/verify-and-send-menu-request", async (req, res) => {
-  const { name, email, phone, code, menuRequest } = req.body;
-  if (!name || !email || !phone || !code || !menuRequest) {
-    return res.status(400).json({ error: "All fields are required." });
-  }
-  const entry = verificationCodes[email];
-  if (!entry) {
-    return res.status(400).json({
-      error:
-        "No verification code found for this email. Please request a new code.",
-    });
-  }
-  if (Date.now() > entry.expires) {
-    delete verificationCodes[email];
-    return res.status(400).json({
-      error: "Verification code has expired. Please request a new code.",
-    });
-  }
-  if (entry.code !== code) {
-    return res.status(400).json({ error: "Invalid verification code." });
-  }
-  // Remove code after use
-  delete verificationCodes[email];
-  const mailOptions = {
-    from: email,
-    to: "<YOUR_EMAIL>",
-    subject: "New Menu Request from Website",
-    text: `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nMenu Request:\n${menuRequest}`,
-  };
-  try {
-    await transporter.sendMail(mailOptions);
-    res.json({ success: true });
-  } catch (error) {
-    console.error("Error sending menu request email:", error);
-    res.status(500).json({ error: "Failed to send menu request email." });
-  }
-});
-
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
