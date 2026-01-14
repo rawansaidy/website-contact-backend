@@ -5,7 +5,7 @@ This Node.js server provides endpoints for sending email verification codes and 
 ## Features
 
 - Send a verification code to a user's email
-- Verify the code and send a message or menu request
+- Verify the code and send a message
 - Email sending via configurable SMTP (Nodemailer)
 - Static file serving for frontend assets
 
@@ -44,19 +44,6 @@ Send a verification code to the user's email.
 - **Body:** `{ "email": "user@example.com" }`
 - **Response:** `{ success: true }` or `{ error: "..." }`
 
-### POST `/verify-and-send-message`
-
-Verify the code and send a message.
-
-- **Body:** `{ "email": "user@example.com", "code": "123456", "message": "Hello!" }`
-- **Response:** `{ success: true }` or `{ error: "..." }`
-
-### POST `/verify-and-send-menu-request`
-
-Verify the code and send a menu request.
-
-- **Body:** `{ "name": "Name", "email": "user@example.com", "phone": "1234567890", "code": "123456", "menuRequest": "Request details" }`
-- **Response:** `{ success: true }` or `{ error: "..." }`
 
 ## Notes
 
